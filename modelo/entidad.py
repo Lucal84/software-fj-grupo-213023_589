@@ -6,7 +6,7 @@ class Entidad(ABC):
         self._identificador = identificador
 
     @property
-    def identificador(self)-> str:
+    def identificador(self)-> str: #el identificador es de solo lectura
         return self._identificador
 
     @abstractmethod

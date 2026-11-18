@@ -1,4 +1,7 @@
-from entidad import Entidad
+try: # para que la importación sea compatible así se ejecute desde main.py o desde modelo/
+    from modelo.entidad import Entidad
+except ImportError:
+    from entidad import Entidad
 
 class Cliente(Entidad):
     def __init__(self, identificador: str, nombre: str, correo: str, telefono: str):
