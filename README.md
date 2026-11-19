@@ -7,9 +7,9 @@ Curso: Programación (213023) - UNAD
 Aplicación desarrollada en Python bajo el paradigma de Programación Orientada a Objetos (POO) con manejo avanzado de excepciones, validaciones estrictas y registro de eventos en archivos (sin base de datos).
 
 ## Integrantes
-- Esloder Alvarez (`Xloder-17`)
-- Jefferson Aya (`Jeffersona_Aya`)
-- Lucal84 (`Lucal84`)
+- Esloder Alvarez QUINCHIA (`Xloder-17`)
+- JEFFERSON ANDREY AYA BARBOSA (`Jeffersona_Aya`)
+- LUIS EDUARDO CALVO MORENO (`Lucal84`)
 
 ## Estructura del proyecto
 - `modelo/`: Clases base del sistema (`entidad.py`, `cliente.py`, `servicios.py`, `reserva.py`).
