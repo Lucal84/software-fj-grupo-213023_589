@@ -10,12 +10,17 @@ class VentanaPrincipal:
     def __init__(self, root):
         self.root = root
         self.root.title("Software FJ - Management System")
-        self.root.geometry("900x650")
+        self.root.geometry("420x400")
 
         # Listas internas para almacenar objetos (simulan la "base de datos")
         self.clientes = []
         self.servicios = []
         self.reservas = []
+
+        self.entry_serv_id = None
+        self.entry_serv_nombre = None
+        self.entry_serv_tarifa = None
+        self.entry_serv_extra = None
 
         self._crear_pestanas()
 
@@ -67,6 +72,7 @@ class VentanaPrincipal:
                 self.entry_cli_telefono.get()
             )
             self.clientes.append(cliente)
+            self.combo_cliente["values"] = [c.nombre for c in self.clientes] #refresca el desplegable de la pestaña "reservations"
             messagebox.showinfo("Success", f"Client '{cliente.nombre}' registered.")
         except Exception as e:
             registrar_error("Error al registrar cliente", e)
@@ -112,6 +118,7 @@ class VentanaPrincipal:
                 raise ValueError("Select a service type.")
 
             self.servicios.append(servicio)
+            self.combo_servicio["values"] = [s.nombre for s in self.servicios] #refresca el desplegable
             messagebox.showinfo("Success", f"Service '{servicio.nombre}' created.")
         except Exception as e:
             registrar_error("Error al crear servicio", e)
@@ -134,9 +141,19 @@ class VentanaPrincipal:
         self.entry_res_duracion = ttk.Entry(parent, width=30)
         self.entry_res_duracion.grid(row=3, column=1, padx=5, pady=5)
 
+        ttk.Label(parent, text="Tax (%):").grid(row=4, column=0, padx=5, pady=5, sticky="e") #campo para ingresarel impuesto
+        self.entry_res_impuesto = ttk.Entry(parent, width=30)
+        self.entry_res_impuesto.insert(0, "19")  # Valor por defecto 19%
+        self.entry_res_impuesto.grid(row=4, column=1, padx=5, pady=5)
+
+        ttk.Label(parent, text="Discount (%):").grid(row=5, column=0, padx=5, pady=5, sticky="e") #campo para ingresar el descuento
+        self.entry_res_descuento = ttk.Entry(parent, width=30)
+        self.entry_res_descuento.insert(0, "0")  # Valor por defecto 0%
+        self.entry_res_descuento.grid(row=5, column=1, padx=5, pady=5)
+
         # Botones de acción
         frame_botones = ttk.Frame(parent)
-        frame_botones.grid(row=4, column=0, columnspan=2, pady=10)
+        frame_botones.grid(row=6, column=0, columnspan=2, pady=10)
 
         ttk.Button(frame_botones, text="Confirm Reservation", command=lambda: self._accion_reserva("confirmar")).pack(side="left", padx=5)
         ttk.Button(frame_botones, text="Cancel Reservation", command=lambda: self._accion_reserva("cancelar")).pack(side="left", padx=5)
@@ -155,17 +172,22 @@ class VentanaPrincipal:
             if not cliente or not servicio:
                 raise ValueError("Client or service not found.")
 
-            reserva = Reserva(id_r, cliente, servicio, duracion)
+            reserva = next((r for r in self.reservas if r.identificador == id_r), None) #busca si ya existe una reserva con el ID dado, si no existe la crea
+            if reserva is None:
+                reserva = Reserva(id_r, cliente, servicio, duracion)
+                self.reservas.append(reserva)
 
             if accion == "confirmar":
-                reserva.confirmar()
-                msg = f"Reservation {id_r} confirmed. Total: ${reserva.costo_total}"
+                impuesto = float(self.entry_res_impuesto.get())
+                descuento = float(self.entry_res_descuento.get())
+                reserva.confirmar(impuesto=impuesto, descuento=descuento)
+                msg = f"Reservation:\n{reserva.describir()}\nTotal: ${reserva.costo_total}\n\n¡CONFIRMED SUCEFULL!" #se describe la reserva al confirmar/cancelar/procesar
             elif accion == "cancelar":
                 reserva.cancelar()
-                msg = f"Reservation {id_r} cancelled."
+                msg = f"Reservation:\n{reserva.describir()}\n\n¡CANCELLED SUCEFULL!"
             elif accion == "procesar":
                 reserva.procesar()
-                msg = f"Reservation {id_r} processed."
+                msg = f"Reservation:\n{reserva.describir()}\n\n¡PROCESSED SUCEFULL!"
             else:
                 raise ValueError("Invalid action.")
 

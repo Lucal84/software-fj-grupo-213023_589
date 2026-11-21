@@ -6,27 +6,12 @@
 # y registro de eventos/errores en archivo de logs (sin base de datos).
 # ==============================================================================
 
-import os
-import logging
+
 from modelo.cliente import Cliente
 from modelo.servicios import ReservaSala, AlquilerEquipo, Asesoria
 from modelo.reserva import Reserva
-
-# --- Configuración del archivo de logs ---
-# Asegura que la carpeta 'logs' exista antes de crear el archivo
-os.makedirs("logs", exist_ok=True)
-logging.basicConfig(
-    filename="logs/eventos.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    encoding="utf-8"
-)
-
-
-# --- Excepción personalizada para encadenamiento de errores ---
-class ErrorSimulacionError(Exception):
-    """Excepción personalizada para encapsular fallos durante la simulación."""
-    pass
+from modelo.registro import logger as logging #usar el logger central como propio
+from modelo.excepciones import OperacionNoPermitidaError as ErrorSimulacionError #de igual manera usa la excepción personalizada
 
 
 def ejecutar_simulaciones():

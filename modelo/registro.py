@@ -3,13 +3,17 @@ import logging
 import sys
 import os
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
-LOG_FILE = "sistema.log"
+BASE_DIR = Path(__file__).resolve().parent.parent
+LOG_DIR = BASE_DIR / "logs"
+LOG_FILE = LOG_DIR / "sistema.log"
 
 def configurar_logging():
     """Configura el logger global para archivo y consola."""
+    os.makedirs(LOG_DIR, exist_ok=True)
     logger = logging.getLogger("SoftwareFJ")
-    logger.setLevel(logging.DEBUG)
+
 
     # Evitar duplicar handlers si se llama varias veces
     if logger.handlers:
@@ -41,7 +45,7 @@ def configurar_logging():
             return
         logger.critical("Excepción no manejada", exc_info=(exc_type, exc_value, exc_traceback))
 
-    sys.excepthook = handle_uncaught_exception
+    sys.excepthook = handle_uncaught_exception 
     return logger
 
 # Instancia global del logger
