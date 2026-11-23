@@ -40,13 +40,13 @@ Aplicación desarrollada en Python bajo el paradigma de Programación Orientada 
 ![Logs](docs/capturas/logs.png)
 
 #### Registro de un usuario
-![registro_usuario](docs/capturas/registro_usuario)
+![registro_usuario](docs/capturas/registro_usuario.png)
 
 #### Registro de un servicio
-![registro_servicio](docs/capturas/registro_servicio)
+![registro_servicio](docs/capturas/registro_servicio.png)
 
 #### Confirmación/Cancelación/Procesamiento de una reserva
-![reserva](docs/capturas/reserva)
+![reserva](docs/capturas/Reserva.png)
 
 ---
 > **Declaración sobre el uso de IA**
